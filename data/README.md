@@ -4,7 +4,7 @@ Place `Database1.mdb` here for **first-run seeding** when the app cannot find a 
 
 ## Obtaining the file
 
-1. Extract `Password_Wallet.zip` from the original distribution (ZIP password: `1852`).
+1. Extract `Password_Wallet.zip` from the original 2015 distribution (use the zip password from that release).
 2. Copy `Database1.mdb` into this folder.
 
 The application copies it to `%AppData%\Password Wallet\` or uses it beside the executable if configured.

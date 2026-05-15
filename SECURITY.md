@@ -1,37 +1,39 @@
-# Security Policy
+# Security
 
 ## Supported versions
 
 | Version | Supported |
 |---------|-----------|
-| 2.3+ (layered architecture fork) | Yes |
-| Original 2012–2015 release | No — upgrade path via automatic migration on login |
+| 2.3 (current source on GitHub) | Yes |
+| Original 2015 installer / older binaries | No |
 
-## Reporting a vulnerability
+## Report a problem
 
-If you discover a security issue, please **do not** open a public GitHub issue with exploit details.  
-Contact the maintainer privately with:
+Please do **not** post exploit details in a public GitHub issue.
 
-- Description of the issue
+Email: **preshanpradeepa@gmail.com** with:
+
+- What you found
 - Steps to reproduce
-- Impact assessment
+- Affected version / commit
 
-## Known limitations
+## Scope
 
-This is a **local, single-user** desktop vault, not a cloud password manager.
+Password Wallet is a **local Windows desktop** program. It is not a synced or cloud vault.
 
-- Data is only as safe as your Windows user account and disk encryption.
-- Jet/Access `.mdb` files can be copied offline; use full-disk encryption.
-- DevExpress and .NET Framework dependencies must be kept patched on the host OS.
-- Memory may contain decrypted passwords while the vault is unlocked.
-- Legacy databases are upgraded on first successful login; keep a backup before upgrading.
+- Protect your PC user account and use disk encryption.
+- Anyone with a copy of `Database1.mdb` and the Jet password can open the file outside the app.
+- Decrypted data may exist in memory while the vault is unlocked.
+- You need your own DevExpress and .NET Framework patches on the machine you build or run on.
 
-## Migration
+## Upgrading an old database
 
-On first login after upgrading, the app will:
+Back up `Database1.mdb` before running this build on a file from the original 2015 app.
 
-1. Re-hash the master password with PBKDF2
-2. Encrypt the hint with AES-256
-3. Re-encrypt all `Table2` passwords from legacy TripleDES to `v2:` AES
+On first successful login, the program may:
 
-Back up `Database1.mdb` before running the upgraded build.
+1. Store the master password as a PBKDF2 hash (instead of the old reversible format)
+2. Encrypt the password hint
+3. Re-encrypt saved passwords with AES (values prefixed with `v2:` in the database)
+
+Legacy encryption in the source exists only so those old files can be read once and migrated.

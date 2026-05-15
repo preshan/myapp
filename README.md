@@ -38,7 +38,7 @@ Put your own file in:
 - next to `PasswordWallet.exe`, or  
 - `%AppData%\Password Wallet\`
 
-If you still have the old zip distribution, the archive password was **1852**.
+If you have the original zip distribution from 2015, use that archive to obtain `Database1.mdb` (see old release notes for the zip password).
 
 ## Project layout
 
