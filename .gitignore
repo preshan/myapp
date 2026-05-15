@@ -1,0 +1,46 @@
+# Build
+[Bb]in/
+[Oo]bj/
+*.suo
+*.user
+*.psess
+*.vspx
+TestResults/
+[Dd]ebug/
+[Rr]elease/
+x86/
+x64/
+*.user
+*.suo
+*.cache
+*.pdb
+*.exe
+*.dll
+.vs/
+TestResults/
+*.vspx
+*.psess
+
+# Personal vault data — NEVER commit
+**/Database1.mdb
+wallet.config
+**/wallet.config
+data/*.mdb
+!data/README.md
+
+# Archives / extraction artifacts
+extracted_db/
+extracted_db2/
+*.rar
+*.zip
+
+# OS
+.DS_Store
+Thumbs.db
+
+# DevExpress (install on build machine)
+packages/
+
+# Backup / IDE artifacts
+*.bak
+*.csproj.user
