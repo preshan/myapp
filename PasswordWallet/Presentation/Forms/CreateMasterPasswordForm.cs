@@ -25,7 +25,7 @@ namespace PasswordWallet.Presentation.Forms
             InitializeComponent();
         }
 
-        private void frmCreatePasssword_Load(object sender, EventArgs e)
+        private void CreateMasterPasswordForm_Load(object sender, EventArgs e)
         {
         }
 
@@ -34,7 +34,7 @@ namespace PasswordWallet.Presentation.Forms
             Close();
         }
 
-        private void frmCreatePasssword_FormClosing(object sender, FormClosingEventArgs e)
+        private void CreateMasterPasswordForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             WalletApplicationContext.End();
             Application.Exit();

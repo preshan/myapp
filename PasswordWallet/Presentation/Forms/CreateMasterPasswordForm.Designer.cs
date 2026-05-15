@@ -210,7 +210,7 @@
             this.labelControl1.Text = "*";
             this.labelControl1.Click += new System.EventHandler(this.labelControl18_Click);
             // 
-            // frmCreatePasssword
+            // CreateMasterPasswordForm
             // 
             this.Appearance.BackColor = System.Drawing.SystemColors.Control;
             this.Appearance.Options.UseBackColor = true;
@@ -222,11 +222,11 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.LookAndFeel.SkinName = "Visual Studio 2013 Dark";
             this.LookAndFeel.UseDefaultLookAndFeel = false;
-            this.Name = "frmCreatePasssword";
+            this.Name = "CreateMasterPasswordForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add New Password";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmCreatePasssword_FormClosing);
-            this.Load += new System.EventHandler(this.frmCreatePasssword_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CreateMasterPasswordForm_FormClosing);
+            this.Load += new System.EventHandler(this.CreateMasterPasswordForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.password.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.confPw.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.passHint.Properties)).EndInit();

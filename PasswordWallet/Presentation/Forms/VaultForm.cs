@@ -351,7 +351,7 @@ namespace PasswordWallet.Presentation.Forms
             new AboutForm().Show();
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void VaultForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             WalletApplicationContext.End();
             Application.Exit();

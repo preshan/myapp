@@ -1,86 +1,29 @@
-# Password Wallet — Architecture
+# Architecture
 
-Classic **layered architecture** for a .NET Framework 4.5 WinForms desktop app (Visual Studio 2012–2015 style): Presentation → Business → Data → Infrastructure, with shared **Core** contracts and models.
+WinForms UI calls into business services, which use data repositories against a Jet/Access `.mdb` file. Shared types and interfaces live in `Core`; crypto and paths are in `Infrastructure`.
 
-## Layer diagram
+## Layers
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  Presentation (WinForms + DevExpress)                   │
-│  Program, LoginForm, VaultForm, CreateMasterPasswordForm│
-└──────────────────────────┬──────────────────────────────┘
-                           │
-┌──────────────────────────▼──────────────────────────────┐
-│  Business                                               │
-│  WalletApplicationContext, CredentialService,           │
-│  MasterPasswordService                                  │
-└──────────────────────────┬──────────────────────────────┘
-                           │
-┌──────────────────────────▼──────────────────────────────┐
-│  Data                                                   │
-│  AccessWalletUnitOfWork, Repositories, LegacyDataMigrator│
-└──────────────────────────┬──────────────────────────────┘
-                           │
-┌──────────────────────────▼──────────────────────────────┐
-│  Infrastructure                                         │
-│  ApplicationPaths, WalletSettings, AesCryptoProvider,   │
-│  PasswordHasher, LegacyTripleDesCryptoProvider          │
-└──────────────────────────┬──────────────────────────────┘
-                           │
-┌──────────────────────────▼──────────────────────────────┐
-│  Core                                                   │
-│  Credential model, ICredentialRepository, ICryptoProvider│
-└─────────────────────────────────────────────────────────┘
-```
+| Folder | Purpose |
+|--------|---------|
+| `Presentation` | `Program.cs`, `LoginForm`, `VaultForm`, `CreateMasterPasswordForm`, `AboutForm` |
+| `Business` | `WalletApplicationContext`, `CredentialService`, `MasterPasswordService` |
+| `Data` | `AccessWalletUnitOfWork`, repositories, legacy migration |
+| `Infrastructure` | `ApplicationPaths`, `WalletSettings`, `AesCryptoProvider`, `PasswordHasher` |
+| `Core` | `Credential` model, repository/crypto interfaces |
 
-## Responsibilities
+## Startup
 
-| Layer | Namespace | Role |
-|-------|-----------|------|
-| **Core** | `PasswordWallet.Core.*` | Domain model (`Credential`), interfaces — no UI or database code |
-| **Infrastructure** | `PasswordWallet.Infrastructure.*` | Paths, DPAPI settings, cryptography |
-| **Data** | `PasswordWallet.Data.*` | Jet OLE DB access, repositories, legacy migration |
-| **Business** | `PasswordWallet.Business.*` | Validation rules, session context, orchestration |
-| **Presentation** | `PasswordWallet.Presentation.*` | Forms and application entry point |
-
-## Key types (2012 naming conventions)
-
-| Type | Purpose |
-|------|---------|
-| `WalletApplicationContext` | App-wide session after unlock (static `Current`) |
-| `AccessWalletUnitOfWork` | Single DB connection + repositories (Unit of Work) |
-| `ICredentialRepository` | CRUD for `Table2` |
-| `IMasterPasswordRepository` | Master row in `Table` |
-| `ICryptoProvider` | Encrypt/decrypt with session key |
-| `CredentialService` | Business rules for duplicate detection |
-| `MasterPasswordService` | First-run setup, login validation, password change |
-
-## Data flow — login
-
-1. `Program.Main` → `WalletApplicationContext.StartNew()`
-2. `LoginForm` → `MasterPasswordService.Validate`
-3. `WalletApplicationContext.Unlock` → PBKDF2 session key + `LegacyDataMigrator`
-4. `VaultForm` uses `CredentialService` / repositories through `Current`
+1. `Program.Main` creates `WalletApplicationContext` and opens the database.
+2. If no master password row exists → `CreateMasterPasswordForm`.
+3. Otherwise → `LoginForm` → on success → `VaultForm`.
+4. Session crypto key is set when the master password validates; credential passwords are encrypted with that key.
 
 ## Database
 
-- **Engine:** Microsoft Access `.mdb` via `Microsoft.Jet.OLEDB.4.0` (32-bit / x86)
-- **Tables:** `[Table]` (master), `[Table2]` (credentials)
-- **Location:** Beside `PasswordWallet.exe`, then `%AppData%\Password Wallet\`
-- **Secrets:** Jet password stored in `wallet.config` (DPAPI), never in source control
+- `[Table]` — master password hash and hint  
+- `[Table2]` — stored credentials (`other` column maps to `Credential.Notes` in code)
 
-## Compatibility
+## Build
 
-| Item | Version |
-|------|---------|
-| .NET Framework | 4.5 |
-| Visual Studio | 2012, 2013, 2015+ |
-| Platform target | **x86** (required for Jet) |
-| DevExpress WinForms | 14.1 |
-
-## Design choices (era-appropriate)
-
-- **No DI container** — explicit construction in `WalletApplicationContext` (typical 2012 LOB apps)
-- **Interfaces in Core** — enables testing and clear layer boundaries without over-engineering
-- **Unit of Work** — one `OleDbConnection` per session
-- **Repository per aggregate** — credentials vs master password
+Target **x86**, .NET 4.5, DevExpress 14.1 referenced from the GAC or install path.

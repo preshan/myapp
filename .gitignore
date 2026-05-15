@@ -44,3 +44,5 @@ packages/
 # Backup / IDE artifacts
 *.bak
 *.csproj.user
+*.cd
+PasswordWallet/Password_Wallet.csproj.user

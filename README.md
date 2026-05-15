@@ -1,123 +1,68 @@
 # Password Wallet
 
-> GitHub repository: [preshan/myapp](https://github.com/preshan/myapp)
+Small Windows desktop app to store website logins locally. Built around **2012–2015** with C#, .NET Framework 4.5, WinForms, and DevExpress 14.1.
 
-[![.NET Framework](https://img.shields.io/badge/.NET%20Framework-4.5-512BD4?style=flat-square)](https://www.microsoft.com/net/framework)
-[![Platform](https://img.shields.io/badge/platform-Windows%20x86-0078D4?style=flat-square)](https://www.microsoft.com/windows)
-[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
+Repository: [github.com/preshan/myapp](https://github.com/preshan/myapp)
 
-A **Windows desktop password manager** built with C#, .NET Framework 4.5, WinForms, and DevExpress 14.1.
+## Features
 
-Originally developed **2012–2015** as a personal project (first shipped application). This repository preserves that era’s stack while applying a **layered architecture**, clearer naming, and **modern security** for open-source sharing.
-
-> Suitable as a portfolio sample for classic .NET desktop development (Visual Studio 2012–2015, LOB WinForms, MS Access).
-
-## What it does
-
-- One **master password** protects the vault
-- Save **name, URL, username, password, notes** per entry
-- Search, edit, delete, copy to clipboard
-- Dark DevExpress UI (Visual Studio 2013 theme)
-
-## Application flow
-
-1. **CreateMasterPasswordForm** — first run only  
-2. **LoginForm** — master password + optional hint  
-3. **VaultForm** — manage stored credentials  
-
-## Tech stack (2015-era)
-
-| Layer | Technology |
-|-------|------------|
-| UI | WinForms + DevExpress 14.1 |
-| Runtime | .NET Framework 4.5 |
-| Database | Microsoft Access `.mdb` (Jet OLE DB 4.0) |
-| IDE | Visual Studio 2012–2015 |
-| Build | MSBuild, **x86** platform |
+- Master password on startup
+- Save name, URL, username, password, and notes per entry
+- Search, edit, delete entries
+- Copy username/password to clipboard
 
 ## Requirements
 
-| Requirement | Notes |
-|-------------|--------|
-| **Windows** | Jet OLE DB 4.0 (32-bit) |
-| **.NET Framework 4.5** | |
-| **Visual Studio 2012–2015+** | Open `Password_Wallet.sln` |
-| **DevExpress WinForms 14.1** | Required to build ([license](https://www.devexpress.com/)) |
-| **Platform** | **x86** (not Any CPU) |
-
-## Quick start
-
-```text
-1. Clone the repository
-2. Install DevExpress 14.1
-3. Build: Debug | x86
-4. Add Database1.mdb locally (see below) — never commit your vault
-5. Run PasswordWallet.exe
-```
-
-### Database (local only — not in this repo)
-
-The vault file **`Database1.mdb`** is **not** included in git (personal data).
-
-| Step | Action |
-|------|--------|
-| 1 | Use your own empty/template `.mdb`, or extract from original `Password_Wallet.zip` (ZIP password: `1852`) |
-| 2 | Place `Database1.mdb` in `data/` or beside `PasswordWallet.exe` |
-| 3 | First run may copy it to `%AppData%\Password Wallet\` |
-
-Legacy Jet passwords are detected automatically; settings are stored in `wallet.config` (Windows DPAPI).
-
-## Project structure
-
-Layered architecture (typical 2012–2015 enterprise desktop style):
-
-```
-PasswordWallet/
-├── Core/              Models + repository interfaces
-├── Infrastructure/    Crypto, paths, settings
-├── Data/              Access repositories + migration
-├── Business/          Services + session context
-└── Presentation/      Forms + entry point
-```
-
-Full details: **[ARCHITECTURE.md](ARCHITECTURE.md)**
-
-## Security highlights (open-source fork)
-
-| Topic | Implementation |
-|-------|----------------|
-| Master password | PBKDF2 (100k iterations) |
-| Entry passwords | AES-256-CBC, key from master password |
-| SQL | Parameterized queries |
-| Legacy upgrade | Automatic migration from original TripleDES format |
-
-See **[SECURITY.md](SECURITY.md)** — back up your `.mdb` before upgrading.
+- Windows (32-bit Jet OLE DB for `.mdb` files)
+- .NET Framework 4.5
+- Visual Studio 2012 or later
+- DevExpress WinForms 14.1 (needed to compile)
+- Build platform: **x86**
 
 ## Build
 
-```text
-Solution:  Password_Wallet.sln
-Project:   PasswordWallet\Password_Wallet.csproj
-Config:    Debug | Release
-Platform:  x86
+1. Open `Password_Wallet.sln`
+2. Restore/reference DevExpress 14.1 assemblies
+3. Set configuration to **Debug** or **Release**, platform **x86**
+4. Build solution
+
+Output: `PasswordWallet\bin\x86\Debug\PasswordWallet.exe` (path may vary by configuration)
+
+## Database
+
+The Access database `Database1.mdb` is **not** in this repo.
+
+Put your own file in:
+
+- `data\Database1.mdb`, or  
+- next to `PasswordWallet.exe`, or  
+- `%AppData%\Password Wallet\`
+
+If you still have the old zip distribution, the archive password was **1852**.
+
+## Project layout
+
+```
+PasswordWallet/
+  Presentation/   Forms and Program.cs
+  Business/       Application logic
+  Data/           Access database code
+  Infrastructure/ Encryption and settings
+  Core/           Models and interfaces
 ```
 
-Clean + Rebuild if DevExpress references fail.
+More detail in [ARCHITECTURE.md](ARCHITECTURE.md).
 
-## Why this repo is a fair 2015 portfolio piece
+## Notes (2026 update)
 
-- Real **end-to-end desktop app** (not a tutorial todo list)
-- Shows **WinForms + third-party controls**, **ADO.NET**, and **local database** skills common in that period
-- Honest about **platform limits** (Windows x86, DevExpress dependency)
-- Documented **architecture** and **security** thinking for reviewers
+This source tree was cleaned up for GitHub: clearer folder names, parameterized SQL, and stronger encryption than the original 2015 build. Existing `.mdb` files are migrated on first login after upgrading.
+
+See [SECURITY.md](SECURITY.md) before using an old database file.
 
 ## License
 
-[MIT](LICENSE) — application source. DevExpress components require a separate commercial license.
+MIT — see [LICENSE](LICENSE). DevExpress UI controls need their own license.
 
 ## Author
 
-**Preshan Pradeepa Kariyawasam**  
-[preshanpradeepa@gmail.com](mailto:preshanpradeepa@gmail.com)
-
-Original application (2015). Refactored for open source (2026).
+Preshan Pradeepa Kariyawasam — preshanpradeepa@gmail.com

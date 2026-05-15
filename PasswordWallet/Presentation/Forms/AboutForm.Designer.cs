@@ -173,7 +173,7 @@
             this.label3.TabIndex = 26;
             this.label3.Text = "Developed by: Preshan Pradeepa Kariyawasam (preshanpradeepa@gmail.com)";
             // 
-            // AboutBox1
+            // AboutForm
             // 
             this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);

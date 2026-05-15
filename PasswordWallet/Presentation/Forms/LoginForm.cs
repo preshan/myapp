@@ -26,7 +26,7 @@ namespace PasswordWallet.Presentation.Forms
             InitializeComponent();
         }
 
-        private void frmLogin_Load(object sender, EventArgs e)
+        private void LoginForm_Load(object sender, EventArgs e)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace PasswordWallet.Presentation.Forms
             }
         }
 
-        private void frmLogin_FormClosing(object sender, FormClosingEventArgs e)
+        private void LoginForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             WalletApplicationContext.End();
             Application.Exit();
@@ -114,7 +114,7 @@ namespace PasswordWallet.Presentation.Forms
                 simpleButton1.PerformClick();
         }
 
-        private void frmLogin_Shown(object sender, EventArgs e)
+        private void LoginForm_Shown(object sender, EventArgs e)
         {
             buttonEdit1.Focus();
         }
